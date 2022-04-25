@@ -1174,14 +1174,14 @@ function handleCreateNewCourse(name, description) {
             var contentCourseBox = getElementByQuerySelector('.coursebox').innerHTML
 
             contentCourseBox += 
-            `<li>
+            `<li data-id-course = ${newCourse.id}>
             <h2>${newCourse.title}</h2>
             <p>${newCourse.description}</p>
             <button onclick = "handleDeleteCourse(${newCourse.id})">Remove</button>
             </li>`
 
             getElementByQuerySelector('.coursebox').innerHTML = contentCourseBox
-
+            initValueInputElement()
         })
 }
 
@@ -1201,13 +1201,20 @@ function handleDeleteCourse(idCourse)
         .then(function (newCourse) {
             // Method1 to render HTML using request api again
 
-            // Method2 Test git commit
-
+            // Method2 using HTML DOM to handle delete course internally
+            var query = `li[data-id-course = "${idCourse}"]`
+            console.log(query)
+            var courseItem = document.querySelector(String(query))
+            console.log(courseItem)
+            courseItem.remove()
         })
 
 }
 
-
+function initValueInputElement() {
+    getElementByQuerySelector('input[name = "title"]').value = ''
+    getElementByQuerySelector('input[name = "description"]').value = ''
+}
 
 function getElementByQuerySelector(cssSelectorItem) {
     return document.querySelector(cssSelectorItem)
@@ -1218,7 +1225,7 @@ function handleRenderingHTML(courses) {
     var html = ''
 
     html = courses.map(function(course) {
-        return `<li>
+        return `<li data-id-course = ${course.id}>
         <h2>${course.title}</h2>
         <p>${course.description}</p>
         <button onclick = "handleDeleteCourse(${course.id})">Remove</button>
@@ -1238,9 +1245,6 @@ function handleOnClickCreateNewCourse() {
     var title = getElementByQuerySelector('input[name = "title"]').value
     var description = getElementByQuerySelector('input[name = "description"]').value
     handleCreateNewCourse(title, description)
-
-
-
 }
 
 
