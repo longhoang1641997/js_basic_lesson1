@@ -1201,7 +1201,7 @@ function handleDeleteCourse(idCourse)
         .then(function (newCourse) {
             // Method1 to render HTML using request api again
 
-            // Method2
+            // Method2 Test git commit
 
         })
 
