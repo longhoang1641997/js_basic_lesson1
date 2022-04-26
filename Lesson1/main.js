@@ -1133,7 +1133,7 @@ var postApi = 'https://jsonplaceholder.typicode.com/posts'
 /** JSON server là một lib để tạo ra 1 fake API server như backend làm 
  * Thêm, sửa, xoá, với fetch và rest API 
  */
-
+/*
 var courseapi = '  http://localhost:3000/courses'
 
 function start() {
@@ -1297,15 +1297,190 @@ function handleOnClickUpdateCourse() {
         handleModifyCourse(title, description)
     }
 }
+*/
+
+//========================================================================================
+/** ECMAScript 6 - ES6
+ * 1. Let,const --> OK
+ * 2. Template Literals --> OK
+ * 3. Multi-line String --> OK
+ * 4. Arrow function --> OK
+ * 5. Classes --> OK
+ * 6. Default parameter values --> OK
+ * 7. Destructuring
+ * 8. Rest parameters
+ * 9. Spread
+ * 10. Enhanced object literals --> OK
+ * 11. Tagged template literals
+ * 12. Modules
+ */
+
+//1.1 Var / Let, Const: Scope, Hosting
+//1.2 Const / Var, Let: Assignment
+
+// Code block: if else, loop, {}
+// 1.1.1 Var / Let, Const:  Điểm giống nhau là đều để khai báo biến
+//                       Điểm khác nhau là biến var có thể đươc truy cập ngoài code block
+//                       còn let, const thì không
+
+{
+    var course = "Javascript"
+    let course1 = "Java"
+    {
+        {
+            console.log(course1)
+        }
+    }
+}
+
+console.log(course)
+
+// 1.1.2 Hosting: Định nghĩa đơn giản là đưa lên trên. Từ khoá var là một trong những keyword hỗ trợ 
+// hosting
+
+/*
+var a = 1; // Trình thông dịch của JS sẽ dịch ra như sau: 
+           // var a; a = 1;
+*/
+// Với ví dụ dưới bởi vì var là từ khóa hỗ trợ hosting nên nó sẽ đưa các hosting lên đầu nên không
+// bị lỗi. Nhưng nếu sử dụng vs let/const sẽ gây ra lỗi 
+
+/*
+a = 1 
+var a;
+console.log(a)
+*/
+
+/* Error 
+a = 2
+b = 3
+let a;
+const b
+console.log(a)
+console.log(b)
+*/
+
+//1.2. Const / Var, Let: Assignment
+// Const đươc hiểu là 1 hằng nên không thể dùng toán tử = để gán lần thứ 2
+
+const cost = 100
+//cost = 1000 ---> Error
+console.log(cost)
+
+//2. Template Literals
+//3. Multi-line String
+// Method1
+const multiLine = 'line1\nline2\nline3'
+// Method2
+const multiLine1 = 'line1\n'
+                    + 'line2\n'
+                    + 'line3\n'
+console.log(multiLine1)
+// Method3
+const multiLine2 = `line1
+line2
+line3`
+
+console.log(multiLine2)
+
+// 4. Arrow function 
+
+/**
+ * Arrow function không thể dùng đươc context(cụ thể là this) trong function 
+ */
+
+
+var logger = (message) => {
+    console.log(message)
+}
+
+const foo = (a) => {
+    console.log(a)
+}
+ 
+logger('Anh Long Dep Trai')
+
+foo(10)
+
+const foo2 = a => {
+    console.log(a)
+}
+
+foo2(1000)
+
+const sum = (first, second) => {
+    return first+second
+}
+
+console.log(sum(1,2))
+
+const obj = (name, title) => ({'name': name, 'title': title})
+
+console.log(obj('LongHoang', 'Dep Trai'))
+
+var courseObj = {
+    name: "zzHoang",
+    //Error when using arrow function for method in object
+    getName: () => {
+        return this.name
+    }
+}
+
+console.log(courseObj.getName())
+
+/** Classes
+ * 
+ */
+
+class Course {
+    constructor(name, title){
+        this.name = name
+        this.title = title
+    }
+
+    getTitle() {
+        return this.title
+    }
+
+}
+
+/** Enhanced object literals
+ * 1. Định nghĩa key:value cho object
+ * 2. Định nghĩa method cho object
+ * 3. Định nghĩa key cho oject dứoi dạng biến
+ */
+{
+    let nameCourse = "JS"
+    let costCourse = 1000
+
+    let myCourse = {
+        nameCourse,
+        costCourse,
+        getName() {
+            return this.nameCourse
+        }
+    }
+
+    console.log(myCourse.getName())
+}
+
+let nameCourse = 'name'
+let costCourse = 'costs'
+
+var myCourse = {
+    [nameCourse]: 'zZhoang',
+    [costCourse]: 1000
+}
+
+console.log(myCourse)
+
+/** Destructuring
+ * 
+ */
 
 
 
-
-
-
-
-
-
+  
 
 
 
