@@ -1142,7 +1142,7 @@ function start() {
 }
 
 start();
-// Working with Rest Api
+//-- Working with Rest Api --//
 function handleGetCourses(courses_api) {
     fetch(courses_api)
         .then(function(response) {
@@ -1178,10 +1178,11 @@ function handleCreateNewCourse(name, description) {
             <h2>${newCourse.title}</h2>
             <p>${newCourse.description}</p>
             <button onclick = "handleDeleteCourse(${newCourse.id})">Remove</button>
+            <button onclick = "handleOnClickModifyCourse(${newCourse.id}, '${newCourse.title}', '${newCourse.description}')">Modify</button>
             </li>`
 
             getElementByQuerySelector('.coursebox').innerHTML = contentCourseBox
-            initValueInputElement()
+            initValueInputElement('', '')
         })
 }
 
@@ -1203,17 +1204,59 @@ function handleDeleteCourse(idCourse)
 
             // Method2 using HTML DOM to handle delete course internally
             var query = `li[data-id-course = "${idCourse}"]`
-            console.log(query)
             var courseItem = document.querySelector(String(query))
-            console.log(courseItem)
             courseItem.remove()
         })
 
 }
 
-function initValueInputElement() {
-    getElementByQuerySelector('input[name = "title"]').value = ''
-    getElementByQuerySelector('input[name = "description"]').value = ''
+function handleModifyCourse(title, description) {
+    console.log('handleModifyCourse', title, description)
+    modifyCourseData.title = title
+    modifyCourseData.description = description
+    console.log(modifyCourseData)
+    var options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: JSON.stringify(modifyCourseData)
+    }
+
+    fetch(courseapi + `/${modifyCourseData.id}`, options)
+    .then(function(response) {
+        return response.json()
+    })
+    .then(function (newCourse) {
+        // Method1 to render HTML using request api again
+        handleGetCourses(courseapi)
+        initValueInputElement('', '')
+        var buttonElement = document.getElementById('create')
+        buttonElement.innerText = 'Create'
+        // Method2 using HTML DOM to handle delete course internally
+    })
+}
+
+//-- End working REST API --//
+
+function handleOnClickModifyCourse(idCourse, titleCourse, descriptionCourse) {
+    console.log('handleOnClickModifyCourse', idCourse, titleCourse, descriptionCourse)
+    var data = {
+        id: idCourse,
+        title: titleCourse,
+        description: descriptionCourse
+    }
+
+    modifyCourseData = data
+
+    initValueInputElement(data.title, data.description)
+    var buttonElement = document.getElementById('create')
+    buttonElement.innerText = 'Modify'
+}
+
+function initValueInputElement(titleValue, descriptionValue) {
+    getElementByQuerySelector('input[name = "title"]').value = titleValue
+    getElementByQuerySelector('input[name = "description"]').value = descriptionValue
 }
 
 function getElementByQuerySelector(cssSelectorItem) {
@@ -1229,6 +1272,7 @@ function handleRenderingHTML(courses) {
         <h2>${course.title}</h2>
         <p>${course.description}</p>
         <button onclick = "handleDeleteCourse(${course.id})">Remove</button>
+        <button onclick = "handleOnClickModifyCourse(${course.id}, '${course.title}', '${course.description}')">Modify</button>
         </li>`
     })
 
@@ -1237,14 +1281,21 @@ function handleRenderingHTML(courses) {
 
 function initHandleEvent() {
     var btnElement = document.querySelector('#create')
-    btnElement.addEventListener('click', handleOnClickCreateNewCourse)
+    btnElement.addEventListener('click', handleOnClickUpdateCourse)
 }
 
-function handleOnClickCreateNewCourse() {
-    console.log('handleOnClickCreateNewCourse')
+function handleOnClickUpdateCourse() {
+    console.log('handleOnClickUpdateCourse')
     var title = getElementByQuerySelector('input[name = "title"]').value
     var description = getElementByQuerySelector('input[name = "description"]').value
-    handleCreateNewCourse(title, description)
+    if (getElementByQuerySelector('#create').innerText === "Create") {
+        console.log('Create Course')
+        handleCreateNewCourse(title, description)
+    }
+    else{
+        console.log('Modify Course')
+        handleModifyCourse(title, description)
+    }
 }
 
 
